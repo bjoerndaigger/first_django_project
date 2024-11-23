@@ -6,16 +6,30 @@ from django.urls import reverse
 
 from django.views import View
 
-from .dummy_data import gadgets
+from .dummy_data import gadgets, manufacturers
 
 # Create your views here.wearabletracker-x10
 
 from django.views.generic.base import RedirectView
 
+# Manufacturers
+def single_manufacturer_view(request, manufacturer_id):
+    return JsonResponse(manufacturers[manufacturer_id])
 
+
+def single_manufacturer_post_view(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            print(f"recieved data: {data}")
+            return JsonResponse({"response": "Das hat geklappt"})
+        except:
+            return JsonResponse({"response": "Das hat nicht geklappt"})
+
+
+# Gadgets
 def start_page_view(request):
     return render(request, "tech_gadgets/test.html", {'gadget_list': gadgets})
-
 
 class RedirectToGadgetView(RedirectView):
     # RedirectToGadgetView erbt von RedirectView, um dynamische Weiterleitungen zu ermöglichen
